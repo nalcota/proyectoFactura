@@ -17,17 +17,20 @@ export const invoice = {
     },
     items: [
         {
+            id: 1,
             product: 'CPU Ryzen 7',
             price: 499,
             quantity: 1,
         },
         {
+            id: 2,
             product: 'Razer Keyboard',
             price: 150,
             quantity: 1,
 
         },
-        {
+        {   
+            id: 3,
             product: 'Monitor',
             price: 499,
             quantity: 1,
