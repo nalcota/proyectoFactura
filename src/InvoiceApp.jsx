@@ -1,11 +1,13 @@
-import { getInvoice } from "../services/getInvoice";
-import { ClientView } from "./ClientView";
-import { CompanyView } from "./CompanyView";
-import { InvoiceView } from "./InvoiceView";
+import { getInvoice } from "./services/getInvoice";
+import { ClientView } from "./components/ClientView";
+import { CompanyView } from "./components/CompanyView";
+import { InvoiceView } from "./components/InvoiceView";
+import { ListItemsView } from "./components/ListItemsView";
+import { TotalView } from "./components/TotalView";
 
 export const InvoiceApp = () => {
 
-    const { id, name, client, company, items } = getInvoice();
+    const { id, name, client, company, items, total } = getInvoice();
 
     return (
         <>
@@ -16,38 +18,17 @@ export const InvoiceApp = () => {
                         Ejemplo Factura
                     </div>
                     <div className="card-body">
-                        <InvoiceView id={id} name={name}/>
+                        <InvoiceView id={id} name={name} />
                         <div className="row my-3">
                             <div className="col">
-                                <ClientView title={"Datos del cliente"}client={client}/>
+                                <ClientView title={"Datos del cliente"} client={client} />
                             </div>
                             <div className="col">
-                                <CompanyView title={"Datos de la empres"} company={company}/>
+                                <CompanyView title={"Datos de la empres"} company={company} />
                             </div>
                         </div>
-
-                        <h4> Productos de la factura </h4>
-                        <table className="table table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Precio</th>
-                                    <th>Cantidad</th>
-                                </tr>
-
-                            </thead>
-                            <tbody>
-                                {items.map(({ id, product, price, quantity }) => (
-                                    <tr key={id}>
-                                        <td>{product}</td>
-                                        <td>{price}</td>
-                                        <td>{quantity}</td>
-                                    </tr>
-
-                                ))}
-
-                            </tbody>
-                        </table>
+                        <ListItemsView title="Productos de la factura" items={items}/>
+                        <TotalView total = {total} />
                     </div>
                 </div>
             </div>
