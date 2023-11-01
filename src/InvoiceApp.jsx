@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getInvoice } from "./services/getInvoice";
+import { getInvoice, calculateTotal } from "./services/getInvoice";
 import { ClientView } from "./components/ClientView";
 import { CompanyView } from "./components/CompanyView";
 import { InvoiceView } from "./components/InvoiceView";
@@ -27,6 +27,8 @@ const invoiceInitial = {
 };
 export const InvoiceApp = () => {
 
+    const [total, setTotal] = useState(0);
+
     const [invoice, setInvoice] = useState(invoiceInitial);
 
     const [items, setItems] = useState([]);
@@ -38,9 +40,14 @@ export const InvoiceApp = () => {
         setItems(data.items)
     }, []);
 
+    useEffect(() => {
+        setTotal(calculateTotal(items));
+        console.log('el items cambio')
+    }, [items]);
 
 
-    const { id, name, client, company, total } = invoice;
+
+    const { id, name, client, company,} = invoice;
 
     const [formItemsState, setFormItemsState] = useState({
 
