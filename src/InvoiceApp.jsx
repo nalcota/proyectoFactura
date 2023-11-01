@@ -12,8 +12,8 @@ export const InvoiceApp = () => {
     const { id, name, client, company, items: itemsInitial, total } = getInvoice();
 
     const [productValue, setProductValue] = useState('');
-    const [priceValue, setPriceValue] = useState('0');
-    const [quantityValue, setQuantityValue] = useState('0');
+    const [priceValue, setPriceValue] = useState('');
+    const [quantityValue, setQuantityValue] = useState('');
 
     const[items, setItems] = useState(itemsInitial);
 
@@ -40,10 +40,20 @@ export const InvoiceApp = () => {
                         <form onSubmit={ event => {
                             event.preventDefault();
 
-                            setItems([...items,{key: 4, product: productValue, price: priceValue, quantity: quantityValue}])
+                            setItems([...items,{
+                                id: 4, 
+                                product: productValue, 
+                                price: +priceValue, 
+                                quantity: parseInt(quantityValue, 10)
+                            }]);
+                            setProductValue('');
+                            setPriceValue('');
+                            setQuantityValue('');
+                                
                         }}>
                             <input type="text" 
                             name="product" 
+                            value = {productValue}
                             placeholder="Producto" 
                             className="form-control m-3" onChange={ event => {
                                 console.log(event.target.value)
@@ -51,6 +61,7 @@ export const InvoiceApp = () => {
                             }}/>
                             <input type="text" 
                             name="price" 
+                            value = {priceValue}
                             placeholder="Precio" 
                             className="form-control m-3" onChange={ event => {
                                 console.log(event.target.value)
@@ -58,6 +69,7 @@ export const InvoiceApp = () => {
                             }}/>
                             <input type="text" 
                             name="quantity" 
+                            value = {quantityValue}
                             placeholder="Cantidad" 
                             className="form-control m-3" onChange={ event => {
                                 console.log(event.target.value)
