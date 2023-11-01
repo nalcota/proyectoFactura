@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getInvoice } from "./services/getInvoice";
 import { ClientView } from "./components/ClientView";
 import { CompanyView } from "./components/CompanyView";
@@ -6,10 +6,41 @@ import { InvoiceView } from "./components/InvoiceView";
 import { ListItemsView } from "./components/ListItemsView";
 import { TotalView } from "./components/TotalView";
 
-
+const invoiceInitial = {
+    id: 0,
+    name: '',
+    client: {
+        name: '',
+        lastName: '',
+        address: {
+            country: '',
+            city: '',
+            street: '',
+            number: 0
+        },
+    },
+    company: {
+        name: '',
+        fiscalNumber: 0
+    },
+    items: []
+};
 export const InvoiceApp = () => {
 
-    const { id, name, client, company, items: itemsInitial, total } = getInvoice();
+    const [invoice, setInvoice] = useState(invoiceInitial);
+
+    const [items, setItems] = useState([]);
+
+    useEffect(() => {
+        const data = getInvoice();
+        console.log(data);
+        setInvoice(data)
+        setItems(data.items)
+    }, []);
+
+
+
+    const { id, name, client, company, total } = invoice;
 
     const [formItemsState, setFormItemsState] = useState({
 
@@ -20,18 +51,18 @@ export const InvoiceApp = () => {
 
     const { product, price, quantity } = formItemsState;
 
-    const [items, setItems] = useState(itemsInitial);
+
 
     const [counter, setCounter] = useState(4)
 
-    const onInputChange = ({target: {name, value}}) => {
+    const onInputChange = ({ target: { name, value } }) => {
         {
-            console.log(name)
-            console.log(value)
+            //console.log(name)
+            //console.log(value)
 
             setFormItemsState({
                 ...formItemsState,
-                [ name ]: value
+                [name]: value
             });
         }
 
@@ -66,7 +97,7 @@ export const InvoiceApp = () => {
                 quantity: '',
             });
             setCounter(counter + 1);
-            
+
 
         }
     }
@@ -98,19 +129,19 @@ export const InvoiceApp = () => {
                                 name="product"
                                 value={product}
                                 placeholder="Producto"
-                                className="form-control m-3" 
+                                className="form-control m-3"
                                 onChange={onInputChange} />
                             <input type="text"
                                 name="price"
                                 value={price}
                                 placeholder="Precio"
-                                className="form-control m-3" 
+                                className="form-control m-3"
                                 onChange={event => onInputChange(event)} />
                             <input type="text"
                                 name="quantity"
                                 value={quantity}
                                 placeholder="Cantidad"
-                                className="form-control m-3" 
+                                className="form-control m-3"
                                 onChange={onInputChange} />
 
                             <button
