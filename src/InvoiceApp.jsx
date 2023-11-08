@@ -28,6 +28,8 @@ const invoiceInitial = {
 };
 export const InvoiceApp = () => {
 
+    const[activeForm, setActiveForm] = useState(false);
+
     const [total, setTotal] = useState(0);
 
     const [invoice, setInvoice] = useState(invoiceInitial);
@@ -44,7 +46,7 @@ export const InvoiceApp = () => {
 
     useEffect(() => {
         setTotal(calculateTotal(items));
-        console.log('data')
+        console.log('Se agrega item')
     }, [items]);
 
 
@@ -65,9 +67,14 @@ export const InvoiceApp = () => {
                 quantity: parseInt(quantity.trim(), 10)
             }]);
             setCounter(counter + 1);
+    }
 
+    const handlerDeleteItem = (id) => {
+        setItems(items.filter(item => item.id !== id ))
+    }
 
-        
+    const onActiveForm = () => {
+        setActiveForm(!activeForm);
     }
 
     return (
@@ -88,9 +95,13 @@ export const InvoiceApp = () => {
                                 <CompanyView title={"Datos de la empres"} company={company} />
                             </div>
                         </div>
-                        <ListItemsView title="Productos de la factura" items={items} />
+                        <ListItemsView title="Productos de la factura" items={items} handlerDeleteItem={id => handlerDeleteItem(id)} />
                         <TotalView total={total} />
-                        <FormItemsView handler={handlerAddItems}/>
+                        <button className="btn btn-secondary" onClick={ onActiveForm}> 
+                        {!activeForm? 'Agregar Item': 'Ocultar Form'}</button>
+                        { !activeForm || <FormItemsView handler={handlerAddItems}/>}
+
+                        
                         
                     </div>
                 </div>
